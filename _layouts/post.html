@@ -1,0 +1,190 @@
+---
+layout: default
+---
+
+<article class="post-layout">
+  <header class="post-header container--narrow">
+    <div class="post-header__meta">
+      {% if page.categories.first %}<a href="/" class="tag"
+        >{{ page.categories.first }}</a
+      >{% endif %}
+      <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}"
+        >{{ page.date | date: "%B %-d, %Y" }}</time
+      >
+      <span class="read-time"
+        >{{ page.content | number_of_words | divided_by: 200 | plus: 1 }} min
+        read</span
+      >
+    </div>
+    <h1 class="post-header__title">{{ page.title }}</h1>
+    {% if page.excerpt %}
+    <p class="post-header__excerpt">
+      {{ page.excerpt | strip_html | truncate: 200 }}
+    </p>
+    {% endif %}
+  </header>
+
+  <div class="container">
+    <img
+      class="post-hero-image"
+      src="https://picsum.photos/seed/{{ page.title | slugify }}/1200/514"
+      alt="{{ page.title }}"
+      width="1200"
+      height="514"
+      loading="lazy"
+    />
+  </div>
+
+  <div class="post-layout__inner">
+    <div class="post-layout__content">
+      <div class="post-body">{{ content }}</div>
+      <div class="post-cta reveal">
+        <h3 class="post-cta__title">Ready to get started?</h3>
+        <p class="post-cta__text">
+          Visit {{ site.brand.cta_text }} for expert advice, quality livestock,
+          and everything you need for your aquarium.
+        </p>
+        <a
+          href="{{ site.brand.cta_url }}"
+          class="btn-primary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ site.brand.cta_text }}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+    <aside
+      class="toc-sidebar post-layout__sidebar"
+      aria-label="Table of contents"
+    >
+      <p class="toc-sidebar__title">On this page</p>
+      <ul id="toc-list" role="list"></ul>
+    </aside>
+  </div>
+</article>
+
+{% assign related = site.posts | where_exp: "p", "p.url != page.url" | limit: 3
+%} {% if related.size > 0 %}
+<section class="related-posts">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">More Articles</h2>
+      <a href="{{ '/' | relative_url }}" class="read-more"
+        >All posts
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7" /></svg
+      ></a>
+    </div>
+    <div class="post-grid">
+      {% for post in related %}
+      <article class="post-card reveal">
+        <a
+          href="{{ post.url | relative_url }}"
+          class="post-card__image-wrap"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <img
+            src="https://picsum.photos/seed/{{ post.title | slugify }}/600/338"
+            alt="{{ post.title }}"
+            width="600"
+            height="338"
+            loading="lazy"
+          />
+        </a>
+        <div class="post-card__body">
+          <div class="post-card__meta">
+            {% if post.categories.first %}<span class="post-category"
+              >{{ post.categories.first }}</span
+            >{% endif %}
+            <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+          </div>
+          <h3 class="post-card__title">
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          </h3>
+          <p class="post-card__excerpt">
+            {{ post.excerpt | strip_html | truncate: 140 }}
+          </p>
+        </div>
+        <div class="post-card__footer">
+          <a href="{{ post.url | relative_url }}" class="read-more"
+            >Read more
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" /></svg
+          ></a>
+          <span class="read-time"
+            >{{ post.content | number_of_words | divided_by: 200 | plus: 1 }}
+            min read</span
+          >
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<script>
+  (function () {
+    const headings = document.querySelectorAll(".post-body h2, .post-body h3");
+    const toc = document.getElementById("toc-list");
+    if (!toc || headings.length < 2) return;
+    headings.forEach(function (h) {
+      if (!h.id)
+        h.id = h.textContent
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
+      const li = document.createElement("li");
+      li.className = h.tagName === "H3" ? "h3" : "h2";
+      const a = document.createElement("a");
+      a.href = "#" + h.id;
+      a.textContent = h.textContent;
+      li.appendChild(a);
+      toc.appendChild(li);
+    });
+    const obs = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          const link = toc.querySelector('a[href="#' + e.target.id + '"]');
+          if (link && e.isIntersecting) {
+            toc.querySelectorAll("a").forEach(function (a) {
+              a.classList.remove("active");
+            });
+            link.classList.add("active");
+          }
+        });
+      },
+      { rootMargin: "-20% 0% -70% 0%" },
+    );
+    headings.forEach(function (h) {
+      obs.observe(h);
+    });
+  })();
+</script>

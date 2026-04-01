@@ -1,0 +1,54 @@
+title: "ebiya.sg Blog"
+description: "Tips, guides, and insights for ornamental fish, aquaculture, and Singapore aquarium hobbyists."
+baseurl: ""
+url: "https://viralberryai.github.io"
+author: "ebiya.sg"
+lang: "en"
+timezone: "Asia/Singapore"
+
+brand:
+  tagline: "Expert tips from Singapore's aquarium specialists"
+  cta_text: "Visit Our Shop"
+  cta_url: "https://ebiya.sg"
+  logo_text: "ebiya"
+  logo_accent: ".sg"
+
+nav_links:
+  - title: "Blog"
+    url: "/"
+  - title: "About"
+    url: "/about/"
+  - title: "Shop"
+    url: "https://ebiya.sg"
+    external: true
+
+social:
+  instagram: "ebiya.sg"
+  tiktok: "ebiya.sg"
+
+markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:day/:title/
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+
+paginate: 9
+paginate_path: "/page/:num/"
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "ebiya.sg"
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - README.md

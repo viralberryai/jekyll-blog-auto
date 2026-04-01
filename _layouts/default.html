@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" data-theme="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{
+      site.title }}{% endif %}
+    </title>
+    <meta
+      name="description"
+      content="{{ page.excerpt | default: site.description | strip_html | truncate: 160 }}"
+    />
+    <link rel="canonical" href="{{ page.url | absolute_url }}" />
+    <meta
+      property="og:title"
+      content="{{ page.title | default: site.title }}"
+    />
+    <meta
+      property="og:type"
+      content="{% if page.layout == 'post' %}article{% else %}website{% endif %}"
+    />
+    <meta property="og:url" content="{{ page.url | absolute_url }}" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="{{ site.title }}"
+      href="{{ '/feed.xml' | relative_url }}"
+    />
+    {% seo %}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container">
+        <div class="site-header__inner">
+          <a href="{{ '/' | relative_url }}" class="site-logo">
+            <span class="site-logo__main">{{ site.brand.logo_text }}</span
+            ><span class="site-logo__accent">{{ site.brand.logo_accent }}</span>
+          </a>
+          <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+            {% for link in site.nav_links %} {% if link.external %}
+            <a
+              href="{{ link.url }}"
+              class="nav-cta"
+              target="_blank"
+              rel="noopener noreferrer"
+              >{{ link.title }}</a
+            >
+            {% else %}
+            <a
+              href="{{ link.url | relative_url }}"
+              {% if page.url == link.url %}class="active" aria-current="page"{% endif %}
+              >{{ link.title }}</a
+            >
+            {% endif %} {% endfor %}
+          </nav>
+          <div class="header-actions">
+            <button
+              class="theme-toggle"
+              data-theme-toggle
+              aria-label="Toggle theme"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            </button>
+            <button
+              class="mobile-menu-toggle"
+              aria-label="Toggle menu"
+              aria-expanded="false"
+              aria-controls="site-nav"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">{{ content }}</main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="site-footer__inner">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <span>{{ site.brand.logo_text }}</span
+              ><span style="color: var(--color-primary)"
+                >{{ site.brand.logo_accent }}</span
+              >
+            </div>
+            <p class="footer-desc">{{ site.description }}</p>
+          </div>
+          <div class="footer-links">
+            <h4>Navigate</h4>
+            <ul role="list">
+              {% for link in site.nav_links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Resources</h4>
+            <ul role="list">
+              <li><a href="{{ '/feed.xml' | relative_url }}">RSS Feed</a></li>
+              <li><a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p class="footer-copy">
+            &copy; {{ 'now' | date: '%Y' }} {{ site.author }}. All rights
+            reserved.
+          </p>
+          <div class="footer-social">
+            {% if site.social.instagram %}<a
+              href="https://instagram.com/{{ site.social.instagram }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Instagram</a
+            >{% endif %} {% if site.social.tiktok %}<a
+              href="https://tiktok.com/@{{ site.social.tiktok }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              >TikTok</a
+            >{% endif %}
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        const r = document.documentElement;
+        let t = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        r.setAttribute("data-theme", t);
+        const btn = document.querySelector("[data-theme-toggle]");
+        const setIcon = function (th) {
+          if (!btn) return;
+          btn.innerHTML =
+            th === "dark"
+              ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+              : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+        };
+        setIcon(t);
+        btn &&
+          btn.addEventListener("click", function () {
+            t = t === "dark" ? "light" : "dark";
+            r.setAttribute("data-theme", t);
+            setIcon(t);
+          });
+        const mob = document.querySelector(".mobile-menu-toggle");
+        const nav = document.getElementById("site-nav");
+        mob &&
+          mob.addEventListener("click", function () {
+            const open = nav.classList.toggle("is-open");
+            mob.setAttribute("aria-expanded", open);
+          });
+        if ("IntersectionObserver" in window) {
+          const obs = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  e.target.classList.add("is-visible");
+                  obs.unobserve(e.target);
+                }
+              });
+            },
+            { threshold: 0.1 },
+          );
+          document.querySelectorAll(".reveal").forEach(function (el) {
+            obs.observe(el);
+          });
+        } else {
+          document.querySelectorAll(".reveal").forEach(function (el) {
+            el.classList.add("is-visible");
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

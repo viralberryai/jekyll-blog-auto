@@ -1,0 +1,129 @@
+---
+layout: default
+---
+
+<section class="blog-hero">
+  <div class="container">
+    <span class="blog-hero__label">Blog</span>
+    <h1 class="blog-hero__title">{{ site.brand.tagline }}</h1>
+    <p class="blog-hero__subtitle">{{ site.description }}</p>
+  </div>
+</section>
+
+{% assign featured = site.posts | first %} {% if featured %}
+<section class="featured-post">
+  <div class="container">
+    <div class="featured-post__grid">
+      <a
+        href="{{ featured.url | relative_url }}"
+        class="featured-post__image-wrap"
+      >
+        <img
+          src="https://picsum.photos/seed/{{ featured.title | slugify }}/800/500"
+          alt="{{ featured.title }}"
+          width="800"
+          height="500"
+          loading="lazy"
+        />
+        <span class="featured-post__badge">Latest</span>
+      </a>
+      <div class="featured-post__content">
+        <div class="featured-post__meta">
+          {% if featured.categories.first %}<span class="post-category"
+            >{{ featured.categories.first }}</span
+          >{% endif %}
+          <span class="post-date"
+            >{{ featured.date | date: "%B %-d, %Y" }}</span
+          >
+        </div>
+        <h2 class="featured-post__title">
+          <a href="{{ featured.url | relative_url }}">{{ featured.title }}</a>
+        </h2>
+        <p class="featured-post__excerpt">
+          {{ featured.excerpt | strip_html | truncate: 200 }}
+        </p>
+        <div class="featured-post__footer">
+          <a href="{{ featured.url | relative_url }}" class="read-more">
+            Read article
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <span class="read-time"
+            >{{ featured.content | number_of_words | divided_by: 200 | plus: 1
+            }} min read</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="post-grid-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">All Posts</h2>
+    </div>
+    <div class="post-grid">
+      {% for post in site.posts offset: 1 limit: 9 %}
+      <article class="post-card reveal">
+        <a
+          href="{{ post.url | relative_url }}"
+          class="post-card__image-wrap"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <img
+            src="https://picsum.photos/seed/{{ post.title | slugify }}/600/338"
+            alt="{{ post.title }}"
+            width="600"
+            height="338"
+            loading="lazy"
+          />
+        </a>
+        <div class="post-card__body">
+          <div class="post-card__meta">
+            {% if post.categories.first %}<span class="post-category"
+              >{{ post.categories.first }}</span
+            >{% endif %}
+            <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+          </div>
+          <h3 class="post-card__title">
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          </h3>
+          <p class="post-card__excerpt">
+            {{ post.excerpt | strip_html | truncate: 140 }}
+          </p>
+        </div>
+        <div class="post-card__footer">
+          <a href="{{ post.url | relative_url }}" class="read-more">
+            Read more
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <span class="read-time"
+            >{{ post.content | number_of_words | divided_by: 200 | plus: 1 }}
+            min read</span
+          >
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
