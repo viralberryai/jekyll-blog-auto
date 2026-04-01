@@ -554,14 +554,6 @@ ul[role="list"] {
   margin-inline: auto;
 }
 
-.post-hero-image {
-  width: 100%;
-  max-height: 514px;
-  object-fit: cover;
-  border-radius: var(--radius-lg);
-  margin-block: var(--space-lg);
-}
-
 .post-layout__inner {
   display: grid;
   grid-template-columns: 1fr 260px;
